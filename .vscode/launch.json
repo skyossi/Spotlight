@@ -6,8 +6,8 @@
             "type": "python",
             "request": "launch",
             "stopOnEntry": false,
-            "pythonPath": "${config:python.pythonPath}",
-            "program": "${file}",
+            "pythonPath": "C:\\Python34-x86\\python.exe",
+            "program": "${workspaceRoot}/main.py",
             "cwd": "${workspaceRoot}",
             "debugOptions": [
                 "WaitOnAbnormalExit",
