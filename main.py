@@ -29,9 +29,15 @@ class MainApplication(QtCore.QObject):
 
         self.dialog = None
 
+        self.loadStylesheet()
         self.setupSystemTray()
         self.setupHotKey()
         # self.searchBar.installEventFilter(self)
+
+    def loadStylesheet(self):
+        ssFile = "Stylesheets/dark.stylesheet"
+        with open(ssFile, "r") as f:
+            self.searchBar.setStyleSheet(f.read())
 
     def setupSystemTray(self):
         menu = QtWidgets.QMenu()
