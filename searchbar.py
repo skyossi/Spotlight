@@ -96,6 +96,9 @@ class SearchBar(QtWidgets.QWidget):
     def textChanged(self):
         print("textChanged: " + self.text.text())
 
+    def registerForTextChangeEvent(self, callback):
+        self.text.textChanged.connect(callback)
+
     def mousePressEvent(self, event):
         self.oldPos = event.globalPos()
 

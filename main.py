@@ -11,7 +11,7 @@ import PyQt5.QtWidgets as QtWidgets
 
 import pygs
 
-import searchbar
+import Infrastructure.Dispatcher.dispatcher as dispatcher
 
 log = logging.getLogger()
 
@@ -25,14 +25,13 @@ class MainApplication(QtCore.QObject):
 
         # Create a Qt application
         self.app = QtWidgets.QApplication(sys.argv)
-        self.searchBar = searchbar.SearchBar()
+        self.dispatcher = dispatcher.SLDispatcher()
 
         self.dialog = None
 
         self.loadStylesheet()
         self.setupSystemTray()
         self.setupHotKey()
-        # self.searchBar.installEventFilter(self)
 
     def loadStylesheet(self):
         ssFile = self.settings.value("theme", "Stylesheets/dark.stylesheet")
@@ -64,28 +63,21 @@ class MainApplication(QtCore.QObject):
         self.show_shortcut.setShortcut(QtGui.QKeySequence(hotkey))
         self.show_shortcut.activated.connect(self.toggleSearchBar)
 
-    def eventFilter(self, object, event):
-        if object == self.searchBar and \
-           event.type() == QtCore.QEvent.WindowDeactivate:
-            self.hide()
-
-        return False
-
     def run(self):
         # Enter Qt application main loop
         self.app.exec_()
         sys.exit()
 
     def showSearchBar(self):
-        self.searchBar.show()
-        # self.searchBar.raise_()
-        self.searchBar.activateWindow()
+        self.dispatcher.searchBar.show()
+        # self.dispatcher.searchBar.raise_()
+        self.dispatcher.searchBar.activateWindow()
 
     def hideSearchBar(self):
-        self.searchBar.hide()
+        self.dispatcher.searchBar.hide()
 
     def toggleSearchBar(self):
-        if self.searchBar.isVisible():
+        if self.dispatcher.searchBar.isVisible():
             self.hideSearchBar()
         else:
             self.showSearchBar()
