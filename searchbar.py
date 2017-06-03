@@ -89,7 +89,7 @@ class SearchBar(QtWidgets.QWidget):
         self.hide_shortcut.activated.connect(self.hide)
 
     def center(self):
-        frame = self.frameGeometry()
+        frame = QtCore.QRect(QtCore.QPoint(0, 0), self.sizeHint())
         frame.moveCenter(QtWidgets.QApplication.desktop().screenGeometry().center())
         self.setGeometry(frame)
 
