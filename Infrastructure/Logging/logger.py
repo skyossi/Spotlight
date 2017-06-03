@@ -31,7 +31,7 @@ def init():
     streamHandler.setFormatter(formatter)
     logger.addHandler(streamHandler)
 
-def print_python_version():
+def printPythonVersion():
     log = logging.getLogger()
 
     log.debug("===================================")

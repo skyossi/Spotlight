@@ -106,6 +106,6 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     logger.init()
-    logger.print_python_version()
+    logger.printPythonVersion()
 
     main()
