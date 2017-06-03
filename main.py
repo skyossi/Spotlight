@@ -15,13 +15,13 @@ import searchbar
 
 log = logging.getLogger()
 
-# Ctrl maps to Command on Mac OS X
-HOTKEY_SHOW = "Alt+Space"
-
 
 class MainApplication(QtCore.QObject):
     def __init__(self):
         super().__init__()
+
+        self.settings = QtCore.QSettings('settings.conf', QtCore.QSettings.IniFormat)
+        self.settings.setFallbacksEnabled(False)
 
         # Create a Qt application
         self.app = QtWidgets.QApplication(sys.argv)
@@ -35,9 +35,9 @@ class MainApplication(QtCore.QObject):
         # self.searchBar.installEventFilter(self)
 
     def loadStylesheet(self):
-        ssFile = "Stylesheets/dark.stylesheet"
+        ssFile = self.settings.value("theme", "Stylesheets/dark.stylesheet")
         with open(ssFile, "r") as f:
-            self.searchBar.setStyleSheet(f.read())
+            self.app.setStyleSheet(f.read())
 
     def setupSystemTray(self):
         menu = QtWidgets.QMenu()
@@ -45,7 +45,7 @@ class MainApplication(QtCore.QObject):
         openAction.triggered.connect(self.showSearchBar)
 
         settingAction = menu.addAction("Settings")
-        settingAction.triggered.connect(self.settings)
+        settingAction.triggered.connect(self.showSettings)
 
         exitAction = menu.addAction("Exit")
         exitAction.triggered.connect(self.exit)
@@ -60,7 +60,8 @@ class MainApplication(QtCore.QObject):
 
     def setupHotKey(self):
         self.show_shortcut = pygs.QxtGlobalShortcut()
-        self.show_shortcut.setShortcut(QtGui.QKeySequence(HOTKEY_SHOW))
+        hotkey = self.settings.value("Hotkey", "Alt+Space")
+        self.show_shortcut.setShortcut(QtGui.QKeySequence(hotkey))
         self.show_shortcut.activated.connect(self.toggleSearchBar)
 
     def eventFilter(self, object, event):
@@ -89,7 +90,7 @@ class MainApplication(QtCore.QObject):
         else:
             self.showSearchBar()
 
-    def settings(self):
+    def showSettings(self):
         self.dialog = QtWidgets.QDialog()
         self.dialog.setAttribute(QtCore.Qt.WA_QuitOnClose, False)
         self.dialog.setWindowTitle("Setting Dialog")
